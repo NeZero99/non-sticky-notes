@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import NoteForm from './components/NoteForm';
+import NavBar from './components/NavBar';
 import './App.css';
 import NoteContainer from './components/NoteContainer';
 import io from 'socket.io-client';
-import { Container, Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { Container, Box } from '@mui/material';
 
 const socket = io.connect('http://localhost:5000')
 
@@ -90,16 +91,7 @@ function Notes() {
 
   return (
       <Container className='container' style={cursorWait}>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static" color='secondary'>
-            <Toolbar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                ToDoingList
-              </Typography>
-              <Button color="inherit">Login</Button>
-            </Toolbar>
-          </AppBar>
-        </Box>
+        <NavBar />
         <Box>
           <NoteForm saveNote={saveNote} />
           <NoteContainer 
