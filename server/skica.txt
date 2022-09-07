@@ -1,0 +1,20 @@
+-sve je odradjeno preko requesta, kasnije uz pomoc reacta bi bilo dobro da se prepravi da moze live da se menja itd.
+/home
+	-prosta pocetna strana sa nekom slikom i random citatima
+	-mozes da uneses odma note, izaberes da li je samo note ili todo
+	-cuva preko sesije, ali te upozori da treba da se ulogujes da bi sacuvalo zvanicno
+/notes
+	-grid sa karticama
+	-pinovane su na vrhu, mozes da ih obrises, editujes, promenis boju
+	-vidi da cuvas note koji je zapocet u sesiji
+/user
+	-registracija preko googla facebooka itd.
+	-mora jaka sifra
+
+pomeranje redosleda itema https://codesandbox.io/s/github/react-dnd/react-dnd/tree/gh-pages/examples_js/04-sortable/simple?from-embed=&file=/src/Container.js
+animacije pri dodavanju i uklanjanju https://mui.com/material-ui/transitions/#transitiongroup
+biranje boje pozadine
+github
+
+	https://codepen.io/akhil_padmanabhan/pen/poWqqra
+	https://travishorn.com/some-ways-to-align-the-last-row-in-a-flexbox-grid-720f365dcb16
