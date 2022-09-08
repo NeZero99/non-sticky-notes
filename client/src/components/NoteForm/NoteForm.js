@@ -130,7 +130,7 @@ function NoteForm( {saveNote} ) {
                 flexDirection: 'column'
             }}>
                 <TextField
-                    label={noteStart ? 'Title' : 'Add a note'}
+                    label={noteStart ? 'Title' : 'Take a note'}
                     placeholder='Title'
                     variant="outlined"
                     value={newTitle}
