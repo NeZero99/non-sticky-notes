@@ -17,7 +17,7 @@ function Note({ note, onDelete, onCheck, saveEditedNote }) {
 
   return (
     <Card sx={{ 
-            minWidth: 250,
+            minWidth: 240,
             margin: 2,
             backgroundColor: note.color,
             transition: 'background-color 0.5s ease',

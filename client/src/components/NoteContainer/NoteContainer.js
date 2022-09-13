@@ -9,8 +9,12 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
   let [secondColum, setsecondColum] = useState([]);
   let [thirdColum, setthirdColum] = useState([]);
   let [fourthColum, setfourthColum] = useState([]);
+  const [windowWidth, setWindowWidth] = useState();
 
   useEffect(() => {
+    let columnMax;
+    if (windowWidth < 900) columnMax = 2;
+    else columnMax = 4;
     let columnSelector = 1;
     let firstColumTemp = [];
     let secondColumTemp = [];
@@ -21,77 +25,70 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
       else if(columnSelector === 2) secondColumTemp.push(note);
       else if(columnSelector === 3) thirdColumTemp.push(note);
       else if(columnSelector === 4) fourthColumTemp.push(note);
-      if(columnSelector === 4) columnSelector = 1;
+      if(columnSelector === columnMax) columnSelector = 1;
       else columnSelector++;
     })
     setFirstColum(firstColumTemp);
     setsecondColum(secondColumTemp);
     setthirdColum(thirdColumTemp);
     setfourthColum(fourthColumTemp);
-  }, [allNotes])
+  }, [allNotes]);
 
+  const updateMedia = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
+
+  const mapNotes = (notesList) => {
+    return notesList.map(note => {
+      if(note._id === 'loadingNote') return <LoadingNote key={note._id}/>
+      return <Note
+        key={note._id}
+        note={note}
+        onDelete={onDelete}
+        onCheck={onCheck}
+        saveEditedNote={saveEditedNote}/>
+    })
+  }
 
   return (
     <Grid container spacing={2}>
-      <Grid xs={3}>
-        {firstColum.map(note => {
-          return <Note
-                    key={note._id}
-                    note={note}
-                    onDelete={onDelete}
-                    onCheck={onCheck}
-                    saveEditedNote={saveEditedNote}/>
-        })}
-      </Grid>
-      <Grid xs={3}>
-        {secondColum.map(note => {
-            return <Note
-                      key={note._id}
-                      note={note}
-                      onDelete={onDelete}
-                      onCheck={onCheck}
-                      saveEditedNote={saveEditedNote}/>
-          })}
-      </Grid>
-      <Grid xs={3}>
-        {thirdColum.map(note => {
-            return <Note
-                      key={note._id}
-                      note={note}
-                      onDelete={onDelete}
-                      onCheck={onCheck}
-                      saveEditedNote={saveEditedNote}/>
-          })}
-      </Grid>
-      <Grid xs={3}>
-        {fourthColum.map(note => {
-            return <Note
-                      key={note._id}
-                      note={note}
-                      onDelete={onDelete}
-                      onCheck={onCheck}
-                      saveEditedNote={saveEditedNote}/>
-          })}
-      </Grid>
+      {windowWidth < 600 ? (
+        <Grid>
+          {mapNotes(allNotes)}
+        </Grid>
+      ) : windowWidth < 900 ? (
+        <>
+        <Grid>
+          {mapNotes(firstColum)}
+        </Grid>
+        <Grid>
+          {mapNotes(secondColum)}
+        </Grid>
+        </>
+      ) : (
+        <>
+        <Grid>
+          {mapNotes(firstColum)}
+        </Grid>
+        <Grid>
+          {mapNotes(secondColum)}
+        </Grid>
+        <Grid>
+          {mapNotes(thirdColum)}
+        </Grid>
+        <Grid>
+          {mapNotes(fourthColum)}
+        </Grid>
+        </>
+      )}
     </Grid>
-
-    // <Box sx={{
-    //   display: 'flex',
-    //   justifyContent: 'center',
-    //   flexWrap: 'wrap',
-    //   alignItems: 'flex-start',
-    // }}>
-    //     {allNotes.slice(0).reverse().map(note => {
-    //         if(note._id === 'loadingNote') return <LoadingNote key={note._id}/>
-    //         return <Note
-    //           key={note._id}
-    //           note={note}
-    //           onDelete={onDelete}
-    //           onCheck={onCheck}
-    //           saveEditedNote={saveEditedNote}/>
-    //     })}
-    // </Box>
   )
+  
 }
 
 export default NoteContainer
