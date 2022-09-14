@@ -48,7 +48,7 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     windowWidth.current = window.innerWidth;
     if(windowWidth.current < 600 && previousWindowWidth.current >= 600) updateColumns();
     else if((windowWidth.current < 900 && windowWidth.current > 600) && (previousWindowWidth.current >= 900 || previousWindowWidth.current <= 600)) updateColumns();
-    else if((windowWidth.current < 1200 && windowWidth.current > 900) && (previousWindowWidth.current >= 1200 || previousWindowWidth.current <= 900)) updateColumns();
+    else if(windowWidth.current > 900 && (previousWindowWidth.current >= 1200 || previousWindowWidth.current <= 900)) updateColumns();
     previousWindowWidth.current = windowWidth.current;
   };
 
@@ -68,7 +68,15 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     <Grid container spacing={1}>
       {windowWidth.current < 600 ? (
         <Grid xs={12}>
-          {mapNotes(allNotes)}
+          {allNotes.slice(0).reverse().map(note => {
+            if(note._id === 'loadingNote') return <LoadingNote key={note._id}/>
+            return <Note
+              key={note._id}
+              note={note}
+              onDelete={onDelete}
+              onCheck={onCheck}
+              saveEditedNote={saveEditedNote}/>
+          })}
         </Grid>
       ) : windowWidth.current < 900 ? (
         <>

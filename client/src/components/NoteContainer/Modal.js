@@ -3,7 +3,7 @@ import ItemForm from '../NoteForm/ItemForm';
 import nextId from "react-id-generator";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ColorPicker from '../ColorPicker'
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 export default function BasicModal({open, handleClose, note, saveEditedNote}) {
   const [noteEditTitle, setNoteEditTitle] = useState(note.title);
@@ -11,6 +11,15 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
   const [noteColor, setNoteColor] = useState(note.color);
   const [noteText, setNoteText] = useState(note.textField);
   const [isEdited, setIsEdited] = useState(false);
+  //media queries
+  const mediaMatch = window.matchMedia('(min-width: 500px)');
+  const [matches, setMatches] = useState(mediaMatch.matches);
+
+  useEffect(() => {
+    const handler = e => setMatches(e.matches);
+    mediaMatch.addEventListener("resize", handler);
+    return () => mediaMatch.removeEventListener("resize", handler);
+  });
 
   const changeItem = (itemId, value) => {
     setIsEdited(true);
@@ -72,18 +81,21 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
   }
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    border: '2px solid #000',
-    borderRadius: 20,
-    boxShadow: 24,
-    padding: 30,
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: '80%',
+    container: matches => ({
+      width: matches ? 400 : 300,
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      // width: 400,
+      border: '2px solid #000',
+      borderRadius: 20,
+      boxShadow: 24,
+      padding: 30,
+      display: 'flex',
+      flexDirection: 'column',
+      maxHeight: '80%',
+    })
   };
 
   return (
@@ -93,7 +105,7 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
         onClose={sendtNoteToSave}
       >
         <Box
-          style={style}
+          style={style.container(matches)}
           sx={{
             backgroundColor: noteColor,
             transition: 'background-color 0.5s ease',}}

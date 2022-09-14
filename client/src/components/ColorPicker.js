@@ -59,6 +59,7 @@ function ColorPicker({preSelected, onColorChange}) {
   return (
     <Box sx={{
         display: 'flex',
+        flexWrap: 'wrap',
         justifyContent: 'center'
     }}>
         {colors.map(color => (
@@ -66,6 +67,7 @@ function ColorPicker({preSelected, onColorChange}) {
                 key={color.hex}
                 sx={{
                     color: color.hex,
+                    px: 0.5,
                 }}
                 onClick={() => selectColor(color.hex)}
             >
