@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useRef} from 'react'
 import LoadingNote from './LoadingNote'
 import Note from './Note'
 import { Box } from '@mui/material/';
@@ -9,18 +9,28 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
   let [secondColum, setsecondColum] = useState([]);
   let [thirdColum, setthirdColum] = useState([]);
   let [fourthColum, setfourthColum] = useState([]);
-  const [windowWidth, setWindowWidth] = useState();
+  const windowWidth = useRef(window.innerWidth);
+  const previousWindowWidth = useRef(0);
 
   useEffect(() => {
+    updateColumns();
+  }, [allNotes]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
+
+  const updateColumns = () => {
     let columnMax;
-    if (windowWidth < 900) columnMax = 2;
+    if (windowWidth.current < 900) columnMax = 2;
     else columnMax = 4;
     let columnSelector = 1;
     let firstColumTemp = [];
     let secondColumTemp = [];
     let thirdColumTemp = [];
     let fourthColumTemp = [];
-    allNotes.forEach(note => {
+    allNotes.slice(0).reverse().forEach(note => {
       if(columnSelector === 1) firstColumTemp.push(note);
       else if(columnSelector === 2) secondColumTemp.push(note);
       else if(columnSelector === 3) thirdColumTemp.push(note);
@@ -32,16 +42,15 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     setsecondColum(secondColumTemp);
     setthirdColum(thirdColumTemp);
     setfourthColum(fourthColumTemp);
-  }, [allNotes]);
+  }
 
   const updateMedia = () => {
-    setWindowWidth(window.innerWidth);
+    windowWidth.current = window.innerWidth;
+    if(windowWidth.current < 600 && previousWindowWidth.current >= 600) updateColumns();
+    else if((windowWidth.current < 900 && windowWidth.current > 600) && (previousWindowWidth.current >= 900 || previousWindowWidth.current <= 600)) updateColumns();
+    else if((windowWidth.current < 1200 && windowWidth.current > 900) && (previousWindowWidth.current >= 1200 || previousWindowWidth.current <= 900)) updateColumns();
+    previousWindowWidth.current = windowWidth.current;
   };
-
-  useEffect(() => {
-    window.addEventListener("resize", updateMedia);
-    return () => window.removeEventListener("resize", updateMedia);
-  });
 
   const mapNotes = (notesList) => {
     return notesList.map(note => {
@@ -56,32 +65,32 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
   }
 
   return (
-    <Grid container spacing={2}>
-      {windowWidth < 600 ? (
-        <Grid>
+    <Grid container spacing={1}>
+      {windowWidth.current < 600 ? (
+        <Grid xs={12}>
           {mapNotes(allNotes)}
         </Grid>
-      ) : windowWidth < 900 ? (
+      ) : windowWidth.current < 900 ? (
         <>
-        <Grid>
+        <Grid xs={6}>
           {mapNotes(firstColum)}
         </Grid>
-        <Grid>
+        <Grid xs={6}>
           {mapNotes(secondColum)}
         </Grid>
         </>
       ) : (
         <>
-        <Grid>
+        <Grid xs={3}>
           {mapNotes(firstColum)}
         </Grid>
-        <Grid>
+        <Grid xs={3}>
           {mapNotes(secondColum)}
         </Grid>
-        <Grid>
+        <Grid xs={3}>
           {mapNotes(thirdColum)}
         </Grid>
-        <Grid>
+        <Grid xs={3}>
           {mapNotes(fourthColum)}
         </Grid>
         </>
