@@ -1,5 +1,6 @@
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
+import { grey } from '@mui/material/colors';
 import {
   FormGroup,
   IconButton,
@@ -40,6 +41,7 @@ function Note({ note, onDelete, onCheck, saveEditedNote }) {
                         label={element.value}
                         control={
                           <Checkbox
+                            sx={{color: grey[800], '&.Mui-checked': {color: grey[900],}}}
                             size='small'
                             checked={element.checked}
                             onChange={() => onCheck(note._id, element._id, !element.checked)}/>
