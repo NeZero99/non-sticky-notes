@@ -1,14 +1,23 @@
-const noteWidth = {
-    width: '20em'
-}
+import {
+  Card,
+  CardContent,
+  CircularProgress,
+} from '@mui/material/';
 
 function LoadingNote() {
   return (
-    <div className="card is-inline-block m-2" style={noteWidth}>
-        <div className="card-content is-flex is-justify-content-center">
-            <button className="button is-loading is-large">Loading</button>
-        </div>
-    </div>
+    <Card sx={{ 
+      width: '95%',
+      height: 130,
+      my: 2,
+      mx: 'auto',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      }}>
+      <CircularProgress color='success'/>
+    </Card>
   )
 }
 

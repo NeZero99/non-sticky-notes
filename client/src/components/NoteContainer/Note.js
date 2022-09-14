@@ -1,14 +1,16 @@
-import IconButton from '@mui/material/IconButton';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import {
+  FormGroup,
+  IconButton,
+  FormControlLabel,
+  Checkbox,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+  Link,
+} from '@mui/material/';
 import {useState} from 'react';
 import Modal from './Modal';
 
@@ -18,7 +20,8 @@ function Note({ note, onDelete, onCheck, saveEditedNote }) {
   return (
     <Card sx={{ 
             width: '95%',
-            margin: 2,
+            my: 2,
+            mx: 'auto',
             backgroundColor: note.color,
             transition: 'background-color 0.5s ease',
         }}>
