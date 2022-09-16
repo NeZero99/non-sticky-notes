@@ -5,7 +5,6 @@ const noteRoutes = require('./routes/note');
 const cors = require('cors');
 const {Server} = require('socket.io');
 const noteHandlers = require('./socketHandlers/noteHandlers');
-const randomQuotes = require('random-quotes');
 
 app.use(cors())
 app.use(express.json());
@@ -32,10 +31,6 @@ db.once('open', () => {
 })
 
 app.use('/notes', noteRoutes);
-
-app.get('/quote', (req, res) => {
-    res.send(randomQuotes.default());
-})
 
 io.on('connection', (socket) => {
     noteHandlers(io, socket);
