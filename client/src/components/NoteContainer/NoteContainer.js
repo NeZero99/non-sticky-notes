@@ -65,7 +65,7 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
   }
 
   return (
-    <Grid container>
+    <Grid container >
       {windowWidth.current < 600 ? (
         <Grid xs={12}>
           {allNotes.slice(0).reverse().map(note => {

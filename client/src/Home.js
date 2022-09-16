@@ -28,6 +28,7 @@ function Home() {
       display: 'flex',
       flexDirection: 'column',
     }}>
+      <NavBar position={'absolute'} />
       <Box sx={{
         flexGrow: 1,
         display: 'flex',
@@ -42,11 +43,10 @@ function Home() {
         height: 50,
         mx: 'auto',
         alignSelf: 'flex-end',
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0)',
       }}>
         <CardContent>
-          <Typography variant='body2' align='center'>
+          <Typography variant='body2' align='center' color='secondary'>
             <Typical
               steps={[
                 'Built by: Nemanja Radoicic', 2000,

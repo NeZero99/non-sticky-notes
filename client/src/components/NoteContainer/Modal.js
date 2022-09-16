@@ -114,6 +114,7 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
               sx={{flexGrow: 1}}
               label="Title"
               variant="outlined"
+              autoComplete='off'
               value={noteEditTitle}
               onChange={(e) => editTitle(e.target.value)}
               autoFocus={true}

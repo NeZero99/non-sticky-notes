@@ -90,9 +90,10 @@ function Notes() {
   }
 
   return (
+    <>
+      <NavBar position={'static'} />
       <Container className='container' style={cursorWait}>
-        <NavBar />
-        <Box>
+        <Box sx={{mt: 6}}>
           <NoteForm saveNote={saveNote} />
           <NoteContainer 
             allNotes={notes}
@@ -101,6 +102,7 @@ function Notes() {
             saveEditedNote={saveEditedNote}/>
         </Box>
       </Container>
+    </>
   )
 }
 

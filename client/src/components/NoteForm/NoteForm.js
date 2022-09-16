@@ -147,6 +147,7 @@ function NoteForm( {saveNote} ) {
                     label='Take a Note'
                     placeholder='Title'
                     variant="outlined"
+                    autoComplete='off'
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     onFocus={startNewNote}
@@ -161,7 +162,7 @@ function NoteForm( {saveNote} ) {
                             <Switch
                                 checked={showCheckbox}
                                 onChange={textCheckBoxTransition}
-                                color='error'
+                                color='primary'
                             />
                         }
                         label="List"
