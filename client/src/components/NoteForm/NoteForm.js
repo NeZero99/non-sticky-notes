@@ -1,9 +1,23 @@
 import React, {useState} from 'react'
 import ItemForm from './ItemForm';
 import nextId from "react-id-generator";
-import { CardContent, Card, Button, TextField, CardActions, Dialog, DialogTitle, DialogActions, FormControlLabel, Switch } from '@mui/material';
+import {
+    CardContent,
+    Card,
+    Button,
+    TextField,
+    CardActions,
+    Dialog,
+    DialogTitle,
+    DialogActions,
+    FormControlLabel,
+    Switch,
+    Collapse,
+    Box
+} from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ColorPicker from '../ColorPicker';
+import { grey } from '@mui/material/colors';
 
 
 function NoteForm( {saveNote} ) {
@@ -130,49 +144,55 @@ function NoteForm( {saveNote} ) {
                 flexDirection: 'column'
             }}>
                 <TextField
-                    label={noteStart ? 'Title' : 'Take a note'}
+                    label='Take a Note'
                     placeholder='Title'
                     variant="outlined"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     onFocus={startNewNote}
                 />
-                {noteStart && (
-                    <FormControlLabel
-                    control={
-                        <Switch
-                            checked={showCheckbox}
-                            onChange={textCheckBoxTransition}
+                <Collapse in={noteStart}>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <FormControlLabel
+                        control={
+                            <Switch
+                                checked={showCheckbox}
+                                onChange={textCheckBoxTransition}
+                                color='error'
+                            />
+                        }
+                        label="List"
                         />
-                    }
-                    label="List"
-                />
-                )}
-                {showCheckbox ? (
-                    addedItems.map(item => (
-                        <ItemForm
-                        key={item._id}
-                        item={item}
-                        onCheck={toggleCheck}
-                        onDelete={deleteItem}
-                        changeItem={changeItem}
-                        newItem={newItem} />
-                    ))
-                ) : (noteStart && (
-                        <TextField
-                            label="Text"
-                            multiline
-                            rows={4}
-                            value={noteText}
-                            onChange={(e) => setNoteText(e.target.value)}
-                        />
-                    ))
-                }
+                        {showCheckbox ? (
+                            addedItems.map(item => (
+                                <ItemForm
+                                key={item._id}
+                                item={item}
+                                onCheck={toggleCheck}
+                                onDelete={deleteItem}
+                                changeItem={changeItem}
+                                newItem={newItem} />
+                            ))
+                            ) : (
+                                <TextField
+                                    label="Text"
+                                    multiline
+                                    rows={4}
+                                    value={noteText}
+                                    onChange={(e) => setNoteText(e.target.value)}
+                                />
+                            )
+                        }
+                    </Box>
+                </Collapse>
                 {addedItems.length > 0 && (
                     <Button sx={{mt: 1, color: 'black'}} onClick={newItem}><AddCircleIcon /></Button>
                 )}
             </CardContent>
-            {noteStart && (
+            <Collapse in={noteStart}>
                 <CardActions sx={{justifyContent: 'space-between', backgroundColor: 'rgba(255, 255, 255, 0.3)'}}>
                     <ColorPicker preSelected={noteColor} onColorChange={setNoteColor} />
                     <Button
@@ -181,7 +201,7 @@ function NoteForm( {saveNote} ) {
                         sx={{color: 'black'}}
                     >Save</Button>
                 </CardActions>
-            )}
+            </Collapse>
             <Dialog
                 open={dialogOpen}
                 onClose={setDialogOpen}
