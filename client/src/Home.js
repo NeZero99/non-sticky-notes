@@ -3,7 +3,7 @@ import NavBar from './components/NavBar'
 import QuoteCard from './components/QuoteCard';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react'
-import { Typography, Container, Card, Box, CardContent } from '@mui/material';
+import { Typography, Container, Card, Box, CardContent, Button } from '@mui/material';
 import Typical from 'react-typical';
 
 function Home() {
@@ -37,8 +37,9 @@ function Home() {
         <div><NoteForm saveNote={saveNote} /></div>
       </Box>
       <Card sx={{
-        minWidth: 300,
+        minWidth: 350,
         maxWidth: 400,
+        height: 50,
         mx: 'auto',
         alignSelf: 'flex-end',
         borderBottomLeftRadius: 0,
@@ -47,9 +48,11 @@ function Home() {
         <CardContent>
           <Typography variant='body2' align='center'>
             <Typical
-              steps={['Hello', 1000, 'Hello world!', 500]}
-              loop={Infinity}
-              wrapper="p"
+              steps={[
+                'Built by: Nemanja Radoicic', 2000,
+              ]}
+              loop={1}
+              wrapper="span"
             />
           </Typography>
         </CardContent>
