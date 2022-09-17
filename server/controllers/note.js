@@ -1,4 +1,5 @@
 const Note = require('../models/note');
+const ExpressError = require('../utils/ExpressError');
 
 module.exports.createNote = (req, res) => {
     //handling request and adding note to the database
@@ -26,7 +27,7 @@ module.exports.saveEditedNote = async (req, res) => {
     res.send(note);
 }
 
-module.exports.showNotes = async (req, res) => {
+module.exports.showNotes = async (req, res, next) => {
     //sending all notes
     const notes = await Note.find({});
     res.send(notes)

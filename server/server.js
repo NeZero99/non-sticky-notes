@@ -35,3 +35,10 @@ app.use('/notes', noteRoutes);
 io.on('connection', (socket) => {//socket connection
     noteHandlers(io, socket);
 })
+
+app.use((err, req, res, next) => {
+    const {statusCode = 500} = err;
+    if(!err.message) err.message = 'Something is wrong!';
+    console.log(`Error message: ${err.message}\nStatus code: ${statusCode}`);
+    res.status(statusCode).send(err.message);
+})

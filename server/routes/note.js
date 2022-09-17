@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const note = require('../controllers/note');
+const catchAsync = require('../utils/catchAsync');
 
 router.route('/')
     .post(note.createNote)
-    .get(note.showNotes)
+    .get(catchAsync(note.showNotes))
+    // .get(note.showNotes)
 
 router.route('/:id')
-    .get(note.detailNote)
-    .put(note.saveEditedNote)
-    .delete(note.deleteNote)
+    .get(catchAsync(note.detailNote))
+    .put(catchAsync(note.saveEditedNote))
+    .delete(catchAsync(note.deleteNote))
 
 module.exports = router;
