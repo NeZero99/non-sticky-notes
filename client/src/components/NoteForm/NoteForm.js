@@ -13,7 +13,9 @@ import {
     FormControlLabel,
     Switch,
     Collapse,
-    Box
+    Box,
+    Snackbar,
+    Alert
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ColorPicker from '../ColorPicker';
@@ -32,6 +34,8 @@ function NoteForm( {saveNote} ) {
     const [showCheckbox, setShowCheckbox] = useState(false);
     //state for opening dialog when switching between list and text field in case of existing checked items
     const [dialogOpen, setDialogOpen] = useState(false);
+    //snackbar open state
+    const [snackOpen, setSnackOpen] = useState(false);
 
     //creating a new item
     const newItem = () => {
@@ -56,19 +60,40 @@ function NoteForm( {saveNote} ) {
         setAddedItems(addedItems.filter(e => e._id !== id))
         if(addedItems.length === 1) setNoteStart(false);
     }
+
+    //function for determining is string empty
+    const isEmptyOrSpaces = (str) => {
+        return str === null || str.match(/^ *$/) !== null;
+    }
     
+    //cheking is note empty before submiting
+    const isNoteEmpty = () => {
+        let emptyItems = true;
+        addedItems.forEach(item => {
+            if(!isEmptyOrSpaces(item.value)) {
+                console.log(item.value);
+                emptyItems = false;
+            }
+        })
+        if(!emptyItems) return false
+        if(!isEmptyOrSpaces(newTitle)) return false;
+        else if(!isEmptyOrSpaces(noteText)) return false;
+        return true;
+    }
+
     //adjusting note object, calling save note to DP function and reseting form
     const addNote = () => {
-        const newNote = {
-            _id: nextId(),
-            title: newTitle,
-            toDoList: addedItems,
-            color: noteColor,
-            textField: noteText,
+        if(isNoteEmpty()) setSnackOpen(true);//opening snackbar if note is empty
+        else{
+            const newNote = {
+                _id: nextId(),
+                title: newTitle,
+                toDoList: addedItems,
+                color: noteColor,
+                textField: noteText,
+            }
+            saveNote(newNote)
         }
-    
-        saveNote(newNote)
-    
         resetForm();
     }
 
@@ -230,6 +255,11 @@ function NoteForm( {saveNote} ) {
                 </Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar
+                open={snackOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackOpen(false)}
+            ><Alert severity="info">Empty note will not be saved</Alert></Snackbar>
         </Card>
     )
 }

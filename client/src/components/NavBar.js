@@ -9,7 +9,6 @@ const linkStyle = {
 function NavBar( {position} ) {
   return (
     <AppBar position={position} color='transparent'>
-      {console.log(position)}
       <Toolbar>
           <Typography variant="h6" color='secondary' component={Link} to={'/'} sx={{ flexGrow: 1, textDecoration: 'none'}}>
           Non-Sticky Notes
