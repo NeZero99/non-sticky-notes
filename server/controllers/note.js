@@ -1,13 +1,15 @@
 const Note = require('../models/note');
-const ExpressError = require('../utils/ExpressError');
+const colors = require('../data/colors.json');
 
 module.exports.createNote = (req, res) => {
     //handling request and adding note to the database
+    console.log(req.body);
     let {title, toDoList, color, textField} = req.body;
     toDoList = toDoList.map(el => {
         delete el._id
         return el
     })
+    if(!colors.includes(color)) color = '#ffffff';
     const note = new Note({title, toDoList, color, textField});
     console.log(note);
     note.save();
@@ -22,6 +24,7 @@ module.exports.saveEditedNote = async (req, res) => {
         delete el._id
         return el
     })
+    if(!colors.includes(color)) color = '#ffffff';
     const note = await Note.findByIdAndUpdate(id, {title, toDoList, color, textField}, {new: true});//new returns updated model
     console.log(note)
     res.send(note);

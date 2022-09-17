@@ -86,7 +86,6 @@ function NoteForm( {saveNote} ) {
         if(isNoteEmpty()) setSnackOpen(true);//opening snackbar if note is empty
         else{
             const newNote = {
-                _id: nextId(),
                 title: newTitle,
                 toDoList: addedItems,
                 color: noteColor,
