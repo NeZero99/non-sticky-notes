@@ -3,7 +3,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { IconButton, Box } from '@mui/material';
 
 function ColorPicker({preSelected, onColorChange}) {
-    const [colors, setColors] = useState([
+    const [colors, setColors] = useState([//predefined colors
         {
             hex: '#ffffff',
             checked: false,
@@ -34,7 +34,7 @@ function ColorPicker({preSelected, onColorChange}) {
         },
     ])
 
-    useEffect(() => {
+    useEffect(() => {//selecting one color by random
         if(preSelected === ''){
             const i = Math.floor(Math.random() * 7);
             preSelected = colors[i].hex;
@@ -42,7 +42,7 @@ function ColorPicker({preSelected, onColorChange}) {
         selectColor(preSelected)
     }, [preSelected])
 
-    const selectColor = (hex) => {
+    const selectColor = (hex) => {//selects color by hex value
         setColors(colors.map(color => {
             if(color.checked) color.checked = false;
             if(color.hex === hex) color.checked = true;
@@ -51,7 +51,7 @@ function ColorPicker({preSelected, onColorChange}) {
         onColorChange(hex)
     }
 
-    const borderToggle = (checked) => {
+    const borderToggle = (checked) => {//changing style of selected color
         if(checked) return '2px solid black';
         return 'none';
     }

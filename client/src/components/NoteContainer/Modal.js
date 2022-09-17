@@ -5,22 +5,27 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ColorPicker from '../ColorPicker'
 import {useState, useEffect} from 'react'
 
+//Modal for editing a note
 export default function BasicModal({open, handleClose, note, saveEditedNote}) {
+  //states for note fields
   const [noteEditTitle, setNoteEditTitle] = useState(note.title);
   const [noteEditList, setNoteEditList] = useState(note.toDoList);
   const [noteColor, setNoteColor] = useState(note.color);
   const [noteText, setNoteText] = useState(note.textField);
+  //state for checking is note edited
   const [isEdited, setIsEdited] = useState(false);
-  //media queries
+  //media queries for responsive design
   const mediaMatch = window.matchMedia('(min-width: 500px)');
   const [matches, setMatches] = useState(mediaMatch.matches);
 
+  //listener for screen size change
   useEffect(() => {
     const handler = e => setMatches(e.matches);
     mediaMatch.addEventListener("resize", handler);
     return () => mediaMatch.removeEventListener("resize", handler);
   });
 
+  //changing value of the item
   const changeItem = (itemId, value) => {
     setIsEdited(true);
     setNoteEditList(noteEditList.map(item => {
@@ -28,12 +33,14 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
       return item
     }));
   }
-
+  
+  //deleting item
   const onDelete = (itemId) => {
     setIsEdited(true);
     setNoteEditList(noteEditList.filter(item => item._id !== itemId))
   }
 
+  //changing state of the checkbox
   const onCheck = (itemId) => {
     setIsEdited(true);
     setNoteEditList(noteEditList.map(item => {
@@ -42,6 +49,7 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
     }))
   }
 
+  //adding new empty item
   const newItem = () => {
     setIsEdited(true);
     const tempItem = {
@@ -52,6 +60,7 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
     setNoteEditList([...noteEditList, tempItem]);
   }
 
+  //adjusting note object and calling save to DB function
   const sendtNoteToSave = () => {
     handleClose(false);
     if(isEdited){
@@ -65,21 +74,25 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
     }
   }
 
+  //editing note title
   const editTitle = (title) => {
     setIsEdited(true);
     setNoteEditTitle(title);
   }
 
+  //changing color
   const colorChange = (color) => {
     setIsEdited(true);
     setNoteColor(color);
   }
 
+  //editing text field (if it's not a list)
   const editText = (e) => {
     setIsEdited(true);
     setNoteText(e.target.value);
   }
 
+  //styling for modal
   const style = {
     container: matches => ({
       width: matches ? 400 : 300,
@@ -119,7 +132,7 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
               onChange={(e) => editTitle(e.target.value)}
               autoFocus={true}
             />
-            {note.toDoList.length === 0 ? (
+            {note.toDoList.length === 0 ? (//condition for showing text field or a list
               <TextField
                 sx={{mt: 2}}
                 label="Text"

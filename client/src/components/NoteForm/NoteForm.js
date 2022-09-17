@@ -19,16 +19,21 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ColorPicker from '../ColorPicker';
 import { grey } from '@mui/material/colors';
 
-
+//component for creating a new note
 function NoteForm( {saveNote} ) {
+    //states for note fields
     const [newTitle, setNewTitle] = useState('');
     const [addedItems, setAddedItems] = useState([]);
-    const [noteStart, setNoteStart] = useState(false);
     const [noteColor, setNoteColor] = useState('');
     const [noteText, setNoteText] = useState('');
+    //stete for checking is input started
+    const [noteStart, setNoteStart] = useState(false);
+    //state for switching between list and text field
     const [showCheckbox, setShowCheckbox] = useState(false);
+    //state for opening dialog when switching between list and text field in case of existing checked items
     const [dialogOpen, setDialogOpen] = useState(false);
 
+    //creating a new item
     const newItem = () => {
         const newI = {
             _id: nextId(),
@@ -38,6 +43,7 @@ function NoteForm( {saveNote} ) {
         setAddedItems([...addedItems, newI])
     }
     
+    //updating checkbox state
     const toggleCheck = (id) => {
         setAddedItems(addedItems.map(item => {
             if(item._id === id) item.checked = !item.checked
@@ -45,11 +51,13 @@ function NoteForm( {saveNote} ) {
         }))
     }
     
+    //deleting item
     const deleteItem = (id) => {
         setAddedItems(addedItems.filter(e => e._id !== id))
         if(addedItems.length === 1) setNoteStart(false);
     }
     
+    //adjusting note object, calling save note to DP function and reseting form
     const addNote = () => {
         const newNote = {
             _id: nextId(),
@@ -64,6 +72,7 @@ function NoteForm( {saveNote} ) {
         resetForm();
     }
 
+    //changing item value
     const changeItem = (id, value) => {
         setAddedItems(addedItems.map(item => {
             if(item._id === id) item.value = value;
@@ -71,6 +80,7 @@ function NoteForm( {saveNote} ) {
         }))
     }
 
+    //setting states when new note is started
     const startNewNote = () => {
         if(!noteStart) {
             if(showCheckbox) newItem();
@@ -78,8 +88,9 @@ function NoteForm( {saveNote} ) {
         }
     }
 
+    //switching items and text between text field and list
     const textCheckBoxTransition = () => {
-        if(showCheckbox){
+        if(showCheckbox){//every item is a new row on text field
             let anyChecked = false;
             for(let i = 0; i < addedItems.length; i++) {
                 if(addedItems[i].checked){
@@ -88,9 +99,9 @@ function NoteForm( {saveNote} ) {
                     break;
                 }
             }
-            if(!anyChecked) handleListToText();
+            if(!anyChecked) handleListToText();// opens dialiog to ask if checked items should be kept
         }
-        else{
+        else{//every new line of text field sets as a new item in the list
             const lines = noteText.split('\n');
             let items = []
             lines.forEach(line => {
@@ -107,7 +118,7 @@ function NoteForm( {saveNote} ) {
         }
     }
 
-    const handleListToText = (keepChecked = false) => {
+    const handleListToText = (keepChecked = false) => {//handling dialog result
         let allText = ''
         addedItems.forEach((item, i) => {
             if(!keepChecked && item.checked) return;
@@ -120,7 +131,7 @@ function NoteForm( {saveNote} ) {
         setDialogOpen(false);
     }
 
-    const resetForm = () => {
+    const resetForm = () => {//reseting form values
         setNewTitle('');
         setAddedItems([]);
         setNoteStart(false);
@@ -153,12 +164,13 @@ function NoteForm( {saveNote} ) {
                     onFocus={startNewNote}
                 />
                 <Collapse in={noteStart}>
+                    {/* transition */}
                     <Box sx={{
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
                         <FormControlLabel
-                        control={
+                        control={//switch that controls what is shown
                             <Switch
                                 checked={showCheckbox}
                                 onChange={textCheckBoxTransition}
@@ -167,7 +179,7 @@ function NoteForm( {saveNote} ) {
                         }
                         label="List"
                         />
-                        {showCheckbox ? (
+                        {showCheckbox ? (//showing list or text field
                             addedItems.map(item => (
                                 <ItemForm
                                 key={item._id}
@@ -194,6 +206,7 @@ function NoteForm( {saveNote} ) {
                 )}
             </CardContent>
             <Collapse in={noteStart}>
+                {/* transition */}
                 <CardActions sx={{justifyContent: 'space-between', backgroundColor: 'rgba(255, 255, 255, 0.3)'}}>
                     <ColorPicker preSelected={noteColor} onColorChange={setNoteColor} />
                     <Button

@@ -4,6 +4,7 @@ import {
   CircularProgress,
 } from '@mui/material/';
 
+//Empty note with Loading circle
 function LoadingNote() {
   return (
     <Card sx={{ 

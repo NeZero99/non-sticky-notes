@@ -5,6 +5,7 @@ const linkStyle = {
   textDecoration: 'none',
 }
 
+//navigation
 function NavBar( {position} ) {
   return (
     <AppBar position={position} color='transparent'>

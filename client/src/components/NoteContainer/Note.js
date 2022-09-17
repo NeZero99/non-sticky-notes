@@ -30,12 +30,12 @@ function Note({ note, onDelete, onCheck, saveEditedNote }) {
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             {note.title}
             </Typography>
-            {note.toDoList.length === 0 ? (
+            {note.toDoList.length === 0 ? (//condition for showing text field or a list
               <Typography variant='body2' sx={{whiteSpace: 'pre-wrap'}}>{note.textField}</Typography>
             ) : (
               <FormGroup>
                 {note.toDoList.map((element, i) => (
-                    (i < 8) ? (
+                    (i < 8) ? (//condition for displaying only first 8 items in case if it's more than that, it just shows button for more
                       <FormControlLabel
                         key={element._id}
                         label={element.value}

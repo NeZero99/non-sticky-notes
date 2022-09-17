@@ -5,10 +5,12 @@ import { Box } from '@mui/material/';
 import Grid from '@mui/material/Unstable_Grid2';
 
 function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
+  //states for colums of dynamic grid
   let [firstColum, setFirstColum] = useState([]);
   let [secondColum, setsecondColum] = useState([]);
   let [thirdColum, setthirdColum] = useState([]);
   let [fourthColum, setfourthColum] = useState([]);
+  //states if window size for responsive dynamic grid
   const windowWidth = useRef(window.innerWidth);
   const previousWindowWidth = useRef(0);
 
@@ -16,13 +18,15 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     updateColumns();
   }, [allNotes]);
 
+  //listener for window size change
   useEffect(() => {
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
   });
 
+  //function for arranging notes in columns
   const updateColumns = () => {
-    let columnMax;
+    let columnMax;//max number of colums, depends on screen size
     if (windowWidth.current < 900) columnMax = 2;
     else columnMax = 4;
     let columnSelector = 1;
@@ -30,7 +34,7 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     let secondColumTemp = [];
     let thirdColumTemp = [];
     let fourthColumTemp = [];
-    allNotes.slice(0).reverse().forEach(note => {
+    allNotes.slice(0).reverse().forEach(note => {//arranges notes in columns deppending on selector
       if(columnSelector === 1) firstColumTemp.push(note);
       else if(columnSelector === 2) secondColumTemp.push(note);
       else if(columnSelector === 3) thirdColumTemp.push(note);
@@ -44,7 +48,7 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     setfourthColum(fourthColumTemp);
   }
 
-  const updateMedia = () => {
+  const updateMedia = () => {// calling updateColums function on screensize brakepoints
     windowWidth.current = window.innerWidth;
     if(windowWidth.current < 600 && previousWindowWidth.current >= 600) updateColumns();
     else if((windowWidth.current < 900 && windowWidth.current > 600) && (previousWindowWidth.current >= 900 || previousWindowWidth.current <= 600)) updateColumns();
@@ -52,9 +56,9 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     previousWindowWidth.current = windowWidth.current;
   };
 
-  const mapNotes = (notesList) => {
+  const mapNotes = (notesList) => {//function for returning note component from a list of notes
     return notesList.map(note => {
-      if(note._id === 'loadingNote') return <LoadingNote key={note._id}/>
+      if(note._id === 'loadingNote') return <LoadingNote key={note._id}/>//returninng loading
       return <Note
         key={note._id}
         note={note}
@@ -66,8 +70,9 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
 
   return (
     <Grid container >
-      {windowWidth.current < 600 ? (
-        <Grid xs={12}>
+      {windowWidth.current < 600 ? (//condition for displaying grids depending on screen size
+        //small - one column
+        <Grid xs={12}>sdasdsa
           {allNotes.slice(0).reverse().map(note => {
             if(note._id === 'loadingNote') return <LoadingNote key={note._id}/>
             return <Note
@@ -79,6 +84,7 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
           })}
         </Grid>
       ) : windowWidth.current < 900 ? (
+        //medium - two columns
         <>
         <Grid xs={6}>
           {mapNotes(firstColum)}
@@ -88,6 +94,7 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
         </Grid>
         </>
       ) : (
+        //large - four columns
         <>
         <Grid xs={3}>
           {mapNotes(firstColum)}

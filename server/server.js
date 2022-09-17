@@ -6,8 +6,8 @@ const cors = require('cors');
 const {Server} = require('socket.io');
 const noteHandlers = require('./socketHandlers/noteHandlers');
 
-app.use(cors())
-app.use(express.json());
+app.use(cors());
+app.use(express.json());//middleware for passing json
 
 const port = 5000;
 const server = app.listen(port, () => {
@@ -32,6 +32,6 @@ db.once('open', () => {
 
 app.use('/notes', noteRoutes);
 
-io.on('connection', (socket) => {
+io.on('connection', (socket) => {//socket connection
     noteHandlers(io, socket);
 })

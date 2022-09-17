@@ -5,6 +5,7 @@ import Home from './Home';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { cyan, blue } from '@mui/material/colors';
 
+//adjusting theme colors
 const theme = createTheme({
   palette: {
     primary: cyan,

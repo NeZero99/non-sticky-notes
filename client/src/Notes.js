@@ -9,18 +9,16 @@ import { Container, Box } from '@mui/material';
 const socket = io.connect('http://localhost:5000')
 
 function Notes() {
+  //all notes state
   const [notes, setNotes] = useState([]);
+  //state for cursor style
   const [cursor, setCursor] = useState('default');
 
   useEffect(() => {
     getData()
-
-    socket.on('check_done', (res) => {
-      
-    })
   }, [])
 
-  const getData = async () => {
+  const getData = async () => {//fetching all notes from a server
     const response = await fetch('/notes')
     if(!response.ok) {
       throw new Error(`HTTP error: ${response.status}`)
@@ -31,7 +29,7 @@ function Notes() {
     // console.log('use effect hook')
   }
 
-  const saveNote = async (newNote) => {
+  const saveNote = async (newNote) => {//sending post request to save note
     setCursor('wait');
     setNotes([...notes, {_id: 'loadingNote'}]);
     const res = await fetch('/notes', {
@@ -47,7 +45,7 @@ function Notes() {
     setCursor('default');
   }
 
-  const saveEditedNote = async (newNote, noteId) => {
+  const saveEditedNote = async (newNote, noteId) => {//sending put request to save edited note
     const res = await fetch(`/notes/${noteId}`, {
         method: 'PUT',
         headers: {
@@ -62,7 +60,7 @@ function Notes() {
     }))
   }
 
-  const deleteNote = async (id) => {
+  const deleteNote = async (id) => {//delete request for deleting
     setCursor('wait');
     const res = await fetch(`/notes/${id}`, {
       method: 'DELETE'
@@ -72,7 +70,7 @@ function Notes() {
     setCursor('default');
   }
 
-  const toggleCheck = async (noteId, itemId, value) => {
+  const toggleCheck = async (noteId, itemId, value) => {//changing state of the checkbox
     setNotes(notes.map(e => {
       if(e._id === noteId) {
         e.toDoList.map(item => {
@@ -82,7 +80,7 @@ function Notes() {
       }
       return e
     }))
-    await socket.emit('check_update', {noteId, itemId, value});
+    await socket.emit('check_update', {noteId, itemId, value});//sending info to the server via socket
   }
 
   const cursorWait = {

@@ -1,16 +1,14 @@
 import NoteForm from './components/NoteForm'
 import NavBar from './components/NavBar'
-import QuoteCard from './components/QuoteCard';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { Typography, Container, Card, Box, CardContent, Button } from '@mui/material';
 import Typical from 'react-typical';
 
 function Home() {
-  const [quote, setQuote] = useState({});
-  let navigate = useNavigate();
+  let navigate = useNavigate();//navigation on routing
 
-  const saveNote = async (newNote) => {
+  const saveNote = async (newNote) => {//sending post request to a server to save a note
     const res = await fetch('/notes', {
       method: 'POST',
       headers: {
@@ -47,7 +45,7 @@ function Home() {
       }}>
         <CardContent>
           <Typography variant='body2' align='center' color='secondary'>
-            <Typical
+            <Typical //typing animation
               steps={[
                 'Built by: Nemanja Radoicic', 2000,
               ]}
