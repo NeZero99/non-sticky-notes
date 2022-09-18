@@ -3,7 +3,7 @@ import ItemForm from '../NoteForm/ItemForm';
 import nextId from "react-id-generator";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ColorPicker from '../ColorPicker'
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 
 //Modal for editing a note
 export default function BasicModal({open, handleClose, note, saveEditedNote}) {
@@ -13,10 +13,12 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
   const [noteColor, setNoteColor] = useState(note.color);
   const [noteText, setNoteText] = useState(note.textField);
   //state for checking is note edited
-  const [isEdited, setIsEdited] = useState(false);
+  const isEdited = useRef(false);
   //media queries for responsive design
   const mediaMatch = window.matchMedia('(min-width: 500px)');
   const [matches, setMatches] = useState(mediaMatch.matches);
+  //title validation state
+  const [titleError, setTitleError] = useState(false);
 
   //listener for screen size change
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
 
   //changing value of the item
   const changeItem = (itemId, value) => {
-    setIsEdited(true);
+    isEdited.current = true;
     setNoteEditList(noteEditList.map(item => {
       if(item._id === itemId) item.value = value;
       return item
@@ -36,13 +38,13 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
   
   //deleting item
   const onDelete = (itemId) => {
-    setIsEdited(true);
+    isEdited.current = true;
     setNoteEditList(noteEditList.filter(item => item._id !== itemId))
   }
 
   //changing state of the checkbox
   const onCheck = (itemId) => {
-    setIsEdited(true);
+    isEdited.current = true;
     setNoteEditList(noteEditList.map(item => {
       if(item._id === itemId) item.checked = !item.checked;
       return item
@@ -51,7 +53,7 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
 
   //adding new empty item
   const newItem = () => {
-    setIsEdited(true);
+    isEdited.current = true;
     const tempItem = {
       _id: nextId(),
       value: '',
@@ -60,36 +62,45 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
     setNoteEditList([...noteEditList, tempItem]);
   }
 
-  //adjusting note object and calling save to DB function
+  //function for determining is string empty
+  const isEmptyOrSpaces = (str) => {
+    return str === null || str.match(/^ *$/) !== null;
+  }
+
+  //adjusting note object and calling save to DB function. Also handle close
   const sendtNoteToSave = () => {
-    handleClose(false);
-    if(isEdited){
-      const newNote = {
-        title: noteEditTitle,
-        toDoList: noteEditList,
-        color: noteColor,
-        textField: noteText,
+    if(isEmptyOrSpaces(noteEditTitle)) setTitleError(true);
+    else{
+      handleClose(false);
+      if(isEdited.current){
+        const newNote = {
+          title: noteEditTitle,
+          toDoList: noteEditList,
+          color: noteColor,
+          textField: noteText,
+        }
+        saveEditedNote(newNote, note._id);
       }
-      saveEditedNote(newNote, note._id);
     }
   }
 
   //editing note title
   const editTitle = (title) => {
-    setIsEdited(true);
+    isEdited.current = true;
     setNoteEditTitle(title);
   }
 
   //changing color
   const colorChange = (color) => {
-    setIsEdited(true);
+    isEdited.current = true;
     setNoteColor(color);
   }
 
   //editing text field (if it's not a list)
   const editText = (e) => {
-    setIsEdited(true);
+    isEdited.current = true;
     setNoteText(e.target.value);
+    if(titleError) setTitleError(false)
   }
 
   //styling for modal
@@ -128,6 +139,8 @@ export default function BasicModal({open, handleClose, note, saveEditedNote}) {
               label="Title"
               variant="outlined"
               autoComplete='off'
+              error={titleError}
+              helperText={titleError && 'Title is required!'}
               value={noteEditTitle}
               onChange={(e) => editTitle(e.target.value)}
               autoFocus={true}

@@ -72,7 +72,7 @@ function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
     <Grid container >
       {windowWidth.current < 600 ? (//condition for displaying grids depending on screen size
         //small - one column
-        <Grid xs={12}>sdasdsa
+        <Grid xs={12}>
           {allNotes.slice(0).reverse().map(note => {
             if(note._id === 'loadingNote') return <LoadingNote key={note._id}/>
             return <Note

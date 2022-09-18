@@ -34,8 +34,8 @@ function NoteForm( {saveNote} ) {
     const [showCheckbox, setShowCheckbox] = useState(false);
     //state for opening dialog when switching between list and text field in case of existing checked items
     const [dialogOpen, setDialogOpen] = useState(false);
-    //snackbar open state
-    const [snackOpen, setSnackOpen] = useState(false);
+    //title validation state
+    const [titleError, setTitleError] = useState(false);
 
     //creating a new item
     const newItem = () => {
@@ -65,25 +65,10 @@ function NoteForm( {saveNote} ) {
     const isEmptyOrSpaces = (str) => {
         return str === null || str.match(/^ *$/) !== null;
     }
-    
-    //cheking is note empty before submiting
-    const isNoteEmpty = () => {
-        let emptyItems = true;
-        addedItems.forEach(item => {
-            if(!isEmptyOrSpaces(item.value)) {
-                console.log(item.value);
-                emptyItems = false;
-            }
-        })
-        if(!emptyItems) return false
-        if(!isEmptyOrSpaces(newTitle)) return false;
-        else if(!isEmptyOrSpaces(noteText)) return false;
-        return true;
-    }
 
     //adjusting note object, calling save note to DP function and reseting form
     const addNote = () => {
-        if(isNoteEmpty()) setSnackOpen(true);//opening snackbar if note is empty
+        if(isEmptyOrSpaces(newTitle)) setTitleError(true);//opening snackbar if note is empty
         else{
             const newNote = {
                 title: newTitle,
@@ -92,8 +77,8 @@ function NoteForm( {saveNote} ) {
                 textField: noteText,
             }
             saveNote(newNote)
+            resetForm();
         }
-        resetForm();
     }
 
     //changing item value
@@ -163,6 +148,11 @@ function NoteForm( {saveNote} ) {
         setNoteText('');
     }
 
+    const updateTitle = (title) => {
+        setNewTitle(title.target.value);
+        if(titleError) setTitleError(false);
+    }
+
     return (
         <Card sx={{
                 minWidth: 200,
@@ -183,8 +173,10 @@ function NoteForm( {saveNote} ) {
                     placeholder='Title'
                     variant="outlined"
                     autoComplete='off'
+                    error={titleError}
+                    helperText={titleError && 'Title is required!'}
                     value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
+                    onChange={updateTitle}
                     onFocus={startNewNote}
                 />
                 <Collapse in={noteStart}>
@@ -254,11 +246,6 @@ function NoteForm( {saveNote} ) {
                 </Button>
                 </DialogActions>
             </Dialog>
-            <Snackbar
-                open={snackOpen}
-                autoHideDuration={3000}
-                onClose={() => setSnackOpen(false)}
-            ><Alert severity="info">Empty note will not be saved</Alert></Snackbar>
         </Card>
     )
 }

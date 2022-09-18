@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 module.exports.noteSchema = Joi.object({
-  title: Joi.string().allow(''),
+  title: Joi.string().required(),
   color: Joi.string(),
   textField: Joi.string().allow(''),
   toDoList: Joi.array().items({
