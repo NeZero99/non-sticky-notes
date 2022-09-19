@@ -1,4 +1,4 @@
-import NavBar from "./components/NavBar"
+import NavBar from "../components/NavBar"
 import { Box, Typography } from '@mui/material'
 
 function NotFound() {

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import NoteForm from './components/NoteForm';
-import NavBar from './components/NavBar';
-import './App.css';
-import NoteContainer from './components/NoteContainer';
+import NoteForm from '../components/NoteForm';
+import NavBar from '../components/NavBar';
+import '../App.css';
+import NoteContainer from '../components/NoteContainer';
 import io from 'socket.io-client';
 import { 
   Container,

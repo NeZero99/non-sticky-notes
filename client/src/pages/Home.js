@@ -1,5 +1,5 @@
-import NoteForm from './components/NoteForm'
-import NavBar from './components/NavBar'
+import NoteForm from '../components/NoteForm'
+import NavBar from '../components/NavBar'
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { Typography, Container, Card, Box, CardContent, Button } from '@mui/material';
