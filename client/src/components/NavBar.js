@@ -11,13 +11,16 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useContext, useState } from 'react';
 import {Link} from 'react-router-dom';
 import UserContext from '../UserContext';
+import { useNavigate } from 'react-router-dom';
 
 //navigation
 function NavBar( {position} ) {
   //for user menu
   const [anchorEl, setAnchorEl] = useState(null);
-
+  //for loged user
   const {currentUser, setCurrentUser} = useContext(UserContext);
+  //for navigation
+  const navigate = useNavigate();
   
   const logout = async () => {
     try{
@@ -27,6 +30,7 @@ function NavBar( {position} ) {
       if(!res.ok) throw new Error(res.statusText);
       const {user} = await res.json();
       setCurrentUser(user);
+      navigate('/');
     }
     catch(e){
       console.log(e.message);

@@ -10,7 +10,7 @@ module.exports.createNote = (req, res) => {
         return el
     })
     if(!colors.includes(color)) color = '#ffffff';
-    const note = new Note({title, toDoList, color, textField});
+    const note = new Note({title, toDoList, color, textField, author: req.user._id});
     console.log(note);
     note.save();
     res.send(note);
@@ -32,7 +32,7 @@ module.exports.saveEditedNote = async (req, res) => {
 
 module.exports.showNotes = async (req, res, next) => {
     //sending all notes
-    const notes = await Note.find({});
+    const notes = await Note.find({author: req.user._id});
     res.send(notes)
 }
 

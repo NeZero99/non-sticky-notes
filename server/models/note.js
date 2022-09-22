@@ -22,6 +22,10 @@ const NoteSchema = new Schema({
     textField: {
         type: String
     },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 module.exports = mongoose.model('Note', NoteSchema);
