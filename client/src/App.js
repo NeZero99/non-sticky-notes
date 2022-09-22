@@ -1,4 +1,4 @@
-import { useState, createContext } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Notes from './pages/Notes';
 import Home from './pages/Home';
@@ -15,6 +15,24 @@ function App() {
   const value = {
     currentUser: currentUser,
     setCurrentUser: setCurrentUser
+  }
+
+  useEffect(() => {
+    getUser();
+  }, [currentUser])
+
+  const getUser = async() => {
+    try{
+      const res = await fetch('/user', {
+        method: 'GET'
+      });
+      if(!res.ok) throw new Error(res.statusText);
+      const {user} = await res.json();
+      setCurrentUser(user);
+    }
+    catch(e){
+      console.log(e);
+    }
   }
 
   //adjusting theme colors

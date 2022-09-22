@@ -4,12 +4,16 @@ import {
     TextField,
     Button
 } from '@mui/material';
-import { useState } from 'react';
+import UserContext from '../UserContext';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {setCurrentUser} = useContext(UserContext);
+  const navigate = useNavigate();
 
   const registerUser = async () => {
     try{
@@ -21,8 +25,9 @@ function Register() {
         body: JSON.stringify({username, email, password})
       });
       if(!res.ok) throw new Error(res.statusText);
-      const data = await res.json();
-      console.log(data);
+      const {user} = await res.json();
+      setCurrentUser(user);
+      navigate('/notes');
     }
     catch(e) {
       console.log(e.message);

@@ -6,11 +6,14 @@ import {
 } from '@mui/material';
 import { useState, useContext } from 'react';
 import UserContext from '../UserContext';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const {setCurrentUser} = useContext(UserContext);
+  //navigation
+  const navigate = useNavigate();
 
   const loginUser = async () => {
     try{
@@ -21,9 +24,10 @@ function Login() {
         },
         body: JSON.stringify({username, password})
       });
-      if(!res.ok) throw new Error(res.statusText);
-      const data = await res.json();
-      setCurrentUser(data);
+      if(res.status === 401) throw new Error('auth is failed');
+      const {user} = await res.json();
+      setCurrentUser(user);
+      navigate('/notes');
     }
     catch(e) {
       console.log(e.message);
