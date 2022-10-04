@@ -2,13 +2,15 @@ import NavBar from "../components/NavBar"
 import {
     Box,
     TextField,
-    Button
+    Button,
+    Container
 } from '@mui/material';
 import UserContext from '../UserContext';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Register() {
+  //states for values
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,39 +37,55 @@ function Register() {
   }
 
   return (
-    <Box sx={{
+    <Container sx={{
       height: '100vh',
       display: 'flex',
       flexDirection: 'column'
     }}>
-      <NavBar position={'static'} />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: 300,
-          backgroundColor: 'white'
-        }}>
-        <TextField 
-          label='Username'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          />
-        <TextField
-          label='Email'
-          type='email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          />
-        <TextField
-          label='Password'
-          type='password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-        <Button onClick={registerUser}>Register</Button>
+      <NavBar position={'absolute'} />
+      <Box sx={{
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 300,
+            backgroundColor: 'white',
+            padding: 2,
+            borderRadius: 2
+          }}>
+          <TextField 
+            label='Username'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            margin='dense'
+            />
+          <TextField
+            label='Email'
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            margin='dense'
+            />
+          <TextField
+            label='Password'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            margin='dense'
+            />
+          <Button onClick={registerUser}
+            sx={{
+              mt: 1,
+            }}
+          >Register</Button>
+        </Box>
       </Box>
-    </Box>
+    </Container>
   )
 }
 

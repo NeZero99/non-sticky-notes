@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Notes from './pages/Notes';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
@@ -49,7 +49,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' index element={<Home />} />
-            <Route path='/notes' element={<Notes />} />
+            <Route path='/notes' element={
+              currentUser ?
+                <Notes /> : <Navigate to='/login'/>
+            } />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<NotFound />} />

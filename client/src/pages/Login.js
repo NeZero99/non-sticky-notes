@@ -2,11 +2,13 @@ import NavBar from "../components/NavBar"
 import {
     Box,
     TextField,
-    Button
+    Button,
+    Container,
+    Link
 } from '@mui/material';
 import { useState, useContext } from 'react';
 import UserContext from '../UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as LinkRouter } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -35,33 +37,53 @@ function Login() {
   }
 
   return (
-    <Box sx={{
+    <Container sx={{
       height: '100vh',
       display: 'flex',
       flexDirection: 'column'
     }}>
-      <NavBar position={'static'}/>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: 300,
-          backgroundColor: 'white'
-        }}>
-        <TextField 
-          label='Username'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          />
-        <TextField
-          label='Password'
-          type='password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-        <Button onClick={loginUser}>Login</Button>
+      <NavBar position={'absolute'}/>
+      <Box sx={{
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 300,
+            backgroundColor: 'white',
+            padding: 2,
+            borderRadius: 2
+          }}>
+          <Link component={LinkRouter} to={'/register'}
+            underline='hover'
+            color='secondary'
+          >No account? Register here!</Link>
+          <TextField 
+            label='Username'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            margin='dense'
+            />
+          <TextField
+            label='Password'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            margin='dense'
+            />
+          <Button
+            onClick={loginUser}
+            sx={{
+              mt: 1,
+            }}
+          >Login</Button>
+        </Box>
       </Box>
-    </Box>
+    </Container>
   )
 }
 
