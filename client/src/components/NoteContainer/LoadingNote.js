@@ -1,6 +1,5 @@
 import {
   Card,
-  CardContent,
   CircularProgress,
 } from '@mui/material/';
 

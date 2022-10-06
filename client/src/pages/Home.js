@@ -1,9 +1,8 @@
-import NoteForm from '../components/NoteForm'
-import NavBar from '../components/NavBar'
+import { Box, Card, CardContent, Container, Typography } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react'
-import { Typography, Container, Card, Box, CardContent, Button } from '@mui/material';
 import Typical from 'react-typical';
+import NavBar from '../components/NavBar';
+import NoteForm from '../components/NoteForm';
 
 function Home() {
   let navigate = useNavigate();//navigation on routing

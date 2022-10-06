@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Notes from './pages/Notes';
-import Home from './pages/Home';
-import NotFound from './pages/NotFound';
+import { blue, cyan } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { cyan, blue } from '@mui/material/colors';
-import Register from './pages/Register';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
 import Login from './pages/Login';
+import Notes from './pages/Notes';
+import NotFound from './pages/NotFound';
+import Register from './pages/Register';
 import UserContext from './UserContext';
 
 function App() {

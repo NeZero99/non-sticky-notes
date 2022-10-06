@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const noteRoutes = require('./routes/note');
 const userRoutes = require('./routes/user');
 const cors = require('cors');
-const {Server} = require('socket.io');
+const { Server } = require('socket.io');
 const noteHandlers = require('./socketHandlers/noteHandlers');
 const session = require('express-session');
 const passport = require('passport');
@@ -66,8 +66,8 @@ io.on('connection', (socket) => {
 
 //error middleware
 app.use((err, req, res, next) => {
-    const {statusCode = 500} = err;
-    if(!err.message) err.message = 'Something is wrong!';
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Something is wrong!';
     console.log(`Error message: ${err.message}\nStatus code: ${statusCode}`);
     res.status(statusCode).send(err.message);
 })

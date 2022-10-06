@@ -3,36 +3,36 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { IconButton, Box } from '@mui/material';
 
 function ColorPicker({preSelected, onColorChange}) {
-    const [colors, setColors] = useState([//predefined colors
-        {
-            hex: '#ffffff',
-            checked: false,
-        },
-        {
-            hex: '#6be88c',
-            checked: false,
-        },
-        {
-            hex: '#b264e3',
-            checked: false,
-        },
-        {
-            hex: '#e3df64',
-            checked: false,
-        },
-        {
-            hex: '#e39064',
-            checked: false,
-        },
-        {
-            hex: '#6475e3',
-            checked: false,
-        },
-        {
-            hex: '#e37971',
-            checked: false,
-        },
-    ])
+  const [colors, setColors] = useState([//predefined colors
+    {
+      hex: '#ffffff',
+      checked: false,
+    },
+    {
+      hex: '#6be88c',
+      checked: false,
+    },
+    {
+      hex: '#b264e3',
+      checked: false,
+    },
+    {
+      hex: '#e3df64',
+      checked: false,
+    },
+    {
+      hex: '#e39064',
+      checked: false,
+    },
+    {
+      hex: '#6475e3',
+      checked: false,
+    },
+    {
+      hex: '#e37971',
+      checked: false,
+    },
+  ])
 
     useEffect(() => {//selecting one color by random
         if(preSelected === ''){

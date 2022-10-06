@@ -1,9 +1,9 @@
 import NavBar from "../components/NavBar"
 import {
-    Box,
-    TextField,
-    Button,
-    Container
+  Box,
+  TextField,
+  Button,
+  Container
 } from '@mui/material';
 import UserContext from '../UserContext';
 import { useState, useContext } from 'react';
@@ -14,24 +14,24 @@ function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {setCurrentUser} = useContext(UserContext);
+  const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const registerUser = async () => {
-    try{
+    try {
       const res = await fetch('/user/register', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
         },
-        body: JSON.stringify({username, email, password})
+        body: JSON.stringify({ username, email, password })
       });
-      if(!res.ok) throw new Error(res.statusText);
-      const {user} = await res.json();
+      if (!res.ok) throw new Error(res.statusText);
+      const { user } = await res.json();
       setCurrentUser(user);
       navigate('/notes');
     }
-    catch(e) {
+    catch (e) {
       console.log(e.message);
     }
   }
@@ -58,26 +58,26 @@ function Register() {
             padding: 2,
             borderRadius: 2
           }}>
-          <TextField 
+          <TextField
             label='Username'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             margin='dense'
-            />
+          />
           <TextField
             label='Email'
             type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             margin='dense'
-            />
+          />
           <TextField
             label='Password'
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             margin='dense'
-            />
+          />
           <Button onClick={registerUser}
             sx={{
               mt: 1,

@@ -1,7 +1,6 @@
 import {useEffect, useState, useRef} from 'react'
 import LoadingNote from './LoadingNote'
 import Note from './Note'
-import { Box } from '@mui/material/';
 import Grid from '@mui/material/Unstable_Grid2';
 
 function NoteContainer({ allNotes, onDelete, onCheck, saveEditedNote }) {
