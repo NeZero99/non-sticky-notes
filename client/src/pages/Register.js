@@ -6,18 +6,21 @@ import {
   Container
 } from '@mui/material';
 import UserContext from '../UserContext';
-import { useState, useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 function Register() {
   //states for values
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const { setCurrentUser } = useContext(UserContext);
+  //navigation
   const navigate = useNavigate();
+  //validation
+  const { register, handleSubmit, formState: {errors}, watch} = useForm();
+  const password = useRef({});
+  password.current = watch('password', '');
 
-  const registerUser = async () => {
+  const registerUser = async ({ username, email, password }) => {
     try {
       const res = await fetch('/user/register', {
         method: 'POST',
@@ -50,6 +53,8 @@ function Register() {
         alignItems: 'center',
       }}>
         <Box
+          component={'form'}
+          onSubmit={handleSubmit(registerUser)}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -60,25 +65,40 @@ function Register() {
           }}>
           <TextField
             label='Username'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
             margin='dense'
+            {...register('username', {required: 'Username is required!'})}
+            error={!!errors?.username}
+            helperText={errors?.username && errors.username.message}
           />
           <TextField
             label='Email'
             type='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             margin='dense'
+            {...register('email', {required: 'Email is required!'})}
+            error={!!errors?.email}
+            helperText={errors?.email && errors.email.message}
           />
           <TextField
             label='Password'
             type='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             margin='dense'
+            {...register('password', {required: 'Password is required!'})}
+            error={!!errors?.password}
+            helperText={errors?.password && errors.password.message}
           />
-          <Button onClick={registerUser}
+          <TextField
+            label='Repeat a password'
+            type='password'
+            margin='dense'
+            {...register('repPassword', {
+              required: 'This field is required!',
+              validate: value => value === password.current ? true : "Passwords do not match"
+            })}
+            error={!!errors?.repPassword}
+            helperText={errors?.repPassword && errors.repPassword.message}
+          />
+          <Button
+            type={'submit'}
             sx={{
               mt: 1,
             }}
