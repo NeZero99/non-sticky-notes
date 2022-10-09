@@ -7,25 +7,25 @@ import {
 } from '@mui/material';
 import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
-
 import NavBar from "../components/NavBar"
 import UserContext from '../UserContext';
+import { useForm } from 'react-hook-form';
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const { setCurrentUser } = useContext(UserContext);
   //navigation
   const navigate = useNavigate();
+  //validation
+  const { register, handleSubmit, formState: {errors} } = useForm();
 
-  const loginUser = async () => {
+  const loginUser = async (data) => {
     try {
       const res = await fetch('/user/login', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify(data)
       });
       if (res.status === 401) throw new Error('auth is failed');
       const { user } = await res.json();
@@ -51,6 +51,8 @@ function Login() {
         alignItems: 'center',
       }}>
         <Box
+          component={'form'}
+          onSubmit={handleSubmit(loginUser)}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -65,19 +67,20 @@ function Login() {
           >No account? Register here!</Link>
           <TextField
             label='Username'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
             margin='dense'
+            {...register('username', {required: 'Username is required!'})}
+            error={!!errors?.username}
+            helperText={errors?.username && errors.username.message}
           />
           <TextField
             label='Password'
-            type='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             margin='dense'
+            {...register('password', {required: 'Password is required!'})}
+            error={!!errors?.password}
+            helperText={errors.password && errors.password.message}
           />
           <Button
-            onClick={loginUser}
+            type='submit'
             sx={{
               mt: 1,
             }}
