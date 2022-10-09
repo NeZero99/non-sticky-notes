@@ -10,7 +10,7 @@ import {
 import { Link as LinkRouter, useNavigate, useLocation } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import NavBar from "../components/NavBar"
-import UserContext from '../UserContext';
+import UserContext from '../utils/UserContext';
 import { useForm } from 'react-hook-form';
 
 function Login() {

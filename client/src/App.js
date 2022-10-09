@@ -7,19 +7,24 @@ import Login from './pages/Login';
 import Notes from './pages/Notes';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
-import UserContext from './UserContext';
+import UserContext from './utils/UserContext';
+import PrivateRoutes from './utils/PrivateRoutes';
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
 
   const value = {
     currentUser: currentUser,
-    setCurrentUser: setCurrentUser
+    setCurrentUser: (user) => {
+      setCurrentUser(user);
+      sessionStorage.setItem('user', JSON.stringify(user));
+    }
   }
 
   useEffect(() => {
     getUser();
-  }, [currentUser])
+    console.log('test')
+  }, [])
 
   const getUser = async() => {
     try{
@@ -49,10 +54,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' index element={<Home />} />
-            <Route path='/notes' element={
-              currentUser ?
-                <Notes /> : <Navigate to='/login'/>
-            } />
+            <Route element={<PrivateRoutes />}>
+              <Route path='/notes' element={<Notes />} />
+            </Route>
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<NotFound />} />

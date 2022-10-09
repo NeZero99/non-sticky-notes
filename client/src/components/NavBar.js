@@ -10,7 +10,7 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useContext, useState } from 'react';
 import {Link} from 'react-router-dom';
-import UserContext from '../UserContext';
+import UserContext from '../utils/UserContext';
 import { useNavigate } from 'react-router-dom';
 
 //navigation

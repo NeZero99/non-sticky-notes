@@ -4,7 +4,7 @@ import Typical from 'react-typical';
 import NavBar from '../components/NavBar';
 import NoteForm from '../components/NoteForm';
 import { useContext } from 'react';
-import UserContext from '../UserContext';
+import UserContext from '../utils/UserContext';
 
 function Home() {
   let navigate = useNavigate();//navigation on routing
