@@ -14,12 +14,9 @@ import {
     Switch,
     Collapse,
     Box,
-    Snackbar,
-    Alert
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ColorPicker from '../ColorPicker';
-import { grey } from '@mui/material/colors';
 
 //component for creating a new note
 function NoteForm( {saveNote} ) {

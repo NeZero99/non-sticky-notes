@@ -23,6 +23,11 @@ function Notes() {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    if(sessionStorage.getItem('note')){
+      const sessionNote = JSON.parse(sessionStorage.getItem('note'))
+      saveNote(sessionNote);
+      sessionStorage.removeItem('note');
+    }
     getData()
   }, [])
 
@@ -53,7 +58,7 @@ function Notes() {
       });
       if(!res.ok) throw new Error(res.statusText);
       const data = await res.json();
-      setNotes([...notes, data]);
+      setNotes(prev => [...prev, data]);
       setCursor('default');
     }
     catch(e){

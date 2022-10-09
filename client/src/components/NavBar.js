@@ -43,7 +43,9 @@ function NavBar( {position} ) {
         <Typography variant="h6" color='secondary' component={Link} to={'/'} sx={{ flexGrow: 1, textDecoration: 'none'}}>
         Non-Sticky Notes
         </Typography>
-        <Button component={Link} to={'/notes'} color='secondary'>All notes</Button>
+        {currentUser && (
+          <Button component={Link} to={'/notes'} color='secondary'>All notes</Button>
+        )}
         <div>
           <IconButton
             size="large"

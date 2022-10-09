@@ -3,10 +3,12 @@ import {
   Button,
   Container,
   Link,
-  TextField
+  TextField,
+  Snackbar,
+  Alert
 } from '@mui/material';
-import { Link as LinkRouter, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { Link as LinkRouter, useNavigate, useLocation } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import NavBar from "../components/NavBar"
 import UserContext from '../UserContext';
 import { useForm } from 'react-hook-form';
@@ -15,8 +17,15 @@ function Login() {
   const { setCurrentUser } = useContext(UserContext);
   //navigation
   const navigate = useNavigate();
+  const location = useLocation();
   //validation
   const { register, handleSubmit, formState: {errors} } = useForm();
+  //snackbar
+  const [openSnack, setOpenSnack] = useState(false);
+
+  useEffect(() => {
+    if(location.state?.toSave) setOpenSnack(true);
+  }, [location])
 
   const loginUser = async (data) => {
     try {
@@ -87,6 +96,11 @@ function Login() {
           >Login</Button>
         </Box>
       </Box>
+      <Snackbar
+          open={openSnack}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnack(false)}
+        ><Alert severity="info">Please login to save Notes</Alert></Snackbar>
     </Container>
   )
 }

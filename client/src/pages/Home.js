@@ -3,11 +3,20 @@ import { useNavigate } from "react-router-dom";
 import Typical from 'react-typical';
 import NavBar from '../components/NavBar';
 import NoteForm from '../components/NoteForm';
+import { useContext } from 'react';
+import UserContext from '../UserContext';
 
 function Home() {
   let navigate = useNavigate();//navigation on routing
-
+  //user
+  const { currentUser } = useContext(UserContext);
+ 
   const saveNote = async (newNote) => {//sending post request to a server to save a note
+    if(!currentUser) {
+      sessionStorage.setItem('note', JSON.stringify(newNote))
+      return navigate('/login', {state: {toSave: true}});
+    }
+    
     const res = await fetch('/notes', {
       method: 'POST',
       headers: {
