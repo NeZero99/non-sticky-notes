@@ -24,7 +24,7 @@ function Login() {
   const [openSnack, setOpenSnack] = useState(false);
 
   useEffect(() => {
-    if(location.state?.toSave) setOpenSnack(true);
+    if(location.state) setOpenSnack(true);
   }, [location])
 
   const loginUser = async (data) => {
@@ -83,6 +83,7 @@ function Login() {
           />
           <TextField
             label='Password'
+            autoComplete='off'
             margin='dense'
             {...register('password', {required: 'Password is required!'})}
             error={!!errors?.password}
@@ -96,11 +97,14 @@ function Login() {
           >Login</Button>
         </Box>
       </Box>
-      <Snackbar
+      {location.state && (
+        <Snackbar
           open={openSnack}
           autoHideDuration={3000}
           onClose={() => setOpenSnack(false)}
-        ><Alert severity="info">Please login to save Notes</Alert></Snackbar>
+        ><Alert severity={location.state.severity}>{location.state.message}</Alert>
+      </Snackbar>
+      )}
     </Container>
   )
 }

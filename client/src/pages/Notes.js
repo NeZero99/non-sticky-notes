@@ -48,7 +48,8 @@ function Notes() {
   const saveNote = async (newNote) => {//sending post request to save note
     try{
       setCursor('wait');
-      setNotes([...notes, {_id: 'loadingNote'}]);
+      const oldNotes = notes;
+      setNotes(prev => [...prev, {_id: 'loadingNote'}]);
       const res = await fetch('/notes', {
           method: 'POST',
           headers: {
@@ -58,7 +59,7 @@ function Notes() {
       });
       if(!res.ok) throw new Error(res.statusText);
       const data = await res.json();
-      setNotes(prev => [...prev, data]);
+      setNotes([...oldNotes, data]);
       setCursor('default');
     }
     catch(e){
@@ -80,7 +81,7 @@ function Notes() {
       });
       if(!res.ok) throw new Error(res.statusText);
       const savedNote = await res.json();
-      setNotes(notes.map(note => {
+      setNotes(prev => prev.map(note => {
         if(note._id === savedNote._id) return savedNote;
         return note
       }))
@@ -100,7 +101,7 @@ function Notes() {
       });
       if(!res.ok) throw Error(res.statusText);
       const _id = await res.json()
-      setNotes(notes.filter(note => note._id !== _id));
+      setNotes(prev => prev.filter(note => note._id !== _id));
       setCursor('default');
     }
     catch(e){
@@ -111,7 +112,7 @@ function Notes() {
   }
 
   const toggleCheck = async (noteId, itemId, value) => {//changing state of the checkbox
-    setNotes(notes.map(e => {
+    setNotes(prev => prev.map(e => {
       if(e._id === noteId) {
         e.toDoList.map(item => {
           if(item._id === itemId) item.checked = value

@@ -11,9 +11,12 @@ module.exports.registerUser = async (req, res) => {
     const user = new User({username, email});
     const newUser = await User.register(user, password);
     console.log(newUser);
-    res.send({
-        user: req.user || null,
-    });
+    req.login(newUser, err => {
+        if(err) return next(err);
+        res.send({
+            user: req.user || null,
+        });
+    })
 }
 
 module.exports.failLogin = (req, res) => {

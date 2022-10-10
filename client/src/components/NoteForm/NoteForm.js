@@ -143,6 +143,7 @@ function NoteForm( {saveNote} ) {
         setNoteStart(false);
         setNoteColor('');
         setNoteText('');
+        setShowCheckbox(false);
     }
 
     const updateTitle = (title) => {
@@ -188,6 +189,7 @@ function NoteForm( {saveNote} ) {
                                 checked={showCheckbox}
                                 onChange={textCheckBoxTransition}
                                 color='primary'
+                                tabIndex={-1}
                             />
                         }
                         label="List"

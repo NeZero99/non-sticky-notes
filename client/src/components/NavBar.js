@@ -24,13 +24,14 @@ function NavBar( {position} ) {
   
   const logout = async () => {
     try{
+      let username = currentUser.username;
       const res = await fetch('/user/logout', {
         method: 'POST',
       });
       if(!res.ok) throw new Error(res.statusText);
       const {user} = await res.json();
       setCurrentUser(user);
-      navigate('/');
+      navigate('/', {state: {message: `Good bye ${username}`, severity: 'success'}});
     }
     catch(e){
       console.log(e.message);
@@ -71,7 +72,10 @@ function NavBar( {position} ) {
             onClose={() => setAnchorEl(null)}
           >
             {currentUser ? (
-              <MenuItem onClick={logout}>Logout</MenuItem>
+              <div>
+                <MenuItem>User: {currentUser.username}</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </div>
             ) : (
               <div>
                 <MenuItem component={Link} to={'/login'}>Login</MenuItem>

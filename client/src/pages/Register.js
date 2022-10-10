@@ -81,6 +81,7 @@ function Register() {
           <TextField
             label='Password'
             type='password'
+            autoComplete='off'
             margin='dense'
             {...register('password', {required: 'Password is required!'})}
             error={!!errors?.password}
@@ -89,6 +90,7 @@ function Register() {
           <TextField
             label='Repeat a password'
             type='password'
+            autoComplete='off'
             margin='dense'
             {...register('repPassword', {
               required: 'This field is required!',
