@@ -3,16 +3,20 @@ import {
   Box,
   TextField,
   Button,
-  Container
+  Container,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import UserContext from '../utils/UserContext';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 function Register() {
   //states for values
   const { setCurrentUser } = useContext(UserContext);
+  //snackbar for auth failed
+  const [openSnack, setOpenSnack] = useState(false);
   //navigation
   const navigate = useNavigate();
   //validation
@@ -32,10 +36,10 @@ function Register() {
       if (!res.ok) throw new Error(res.statusText);
       const { user } = await res.json();
       setCurrentUser(user);
-      navigate('/notes');
+      navigate('/notes', {state: {message: `Welcome ${user.username}`, severity: 'success'}});
     }
     catch (e) {
-      console.log(e.message);
+      setOpenSnack(true);
     }
   }
 
@@ -67,7 +71,7 @@ function Register() {
             label='Username'
             margin='dense'
             {...register('username', {required: 'Username is required!'})}
-            error={!!errors?.username}
+            error={!!errors?.username || openSnack}
             helperText={errors?.username && errors.username.message}
           />
           <TextField
@@ -75,7 +79,7 @@ function Register() {
             type='email'
             margin='dense'
             {...register('email', {required: 'Email is required!'})}
-            error={!!errors?.email}
+            error={!!errors?.email || openSnack}
             helperText={errors?.email && errors.email.message}
           />
           <TextField
@@ -107,6 +111,12 @@ function Register() {
           >Register</Button>
         </Box>
       </Box>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnack(false)}
+        ><Alert severity='error'>Username or email already exist</Alert>
+      </Snackbar>
     </Container>
   )
 }

@@ -10,6 +10,7 @@ import {
   Snackbar,
   Alert, 
 } from '@mui/material';
+import SnackbarFlash from '../components/SnackbarFlash';
 
 const socket = io.connect('http://localhost:5000')
 
@@ -145,6 +146,7 @@ function Notes() {
           autoHideDuration={2000}
           onClose={() => setOpenSnack(false)}
         ><Alert severity="error">{errorMessage}</Alert></Snackbar>
+        <SnackbarFlash />
       </Container>
     </>
   )

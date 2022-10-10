@@ -31,7 +31,7 @@ function NavBar( {position} ) {
       if(!res.ok) throw new Error(res.statusText);
       const {user} = await res.json();
       setCurrentUser(user);
-      navigate('/', {state: {message: `Good bye ${username}`, severity: 'success'}});
+      navigate('/', {state: {message: `Good bye ${username}`}});
     }
     catch(e){
       console.log(e.message);

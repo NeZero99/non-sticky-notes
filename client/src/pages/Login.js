@@ -7,25 +7,21 @@ import {
   Snackbar,
   Alert
 } from '@mui/material';
-import { Link as LinkRouter, useNavigate, useLocation } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { Link as LinkRouter, useNavigate,  } from 'react-router-dom';
+import { useContext, useState } from 'react';
 import NavBar from "../components/NavBar"
 import UserContext from '../utils/UserContext';
 import { useForm } from 'react-hook-form';
+import SnackbarFlash from '../components/SnackbarFlash';
 
 function Login() {
   const { setCurrentUser } = useContext(UserContext);
+  //snackbar for auth failed
+  const [openSnack, setOpenSnack] = useState(false);
   //navigation
   const navigate = useNavigate();
-  const location = useLocation();
   //validation
   const { register, handleSubmit, formState: {errors} } = useForm();
-  //snackbar
-  const [openSnack, setOpenSnack] = useState(false);
-
-  useEffect(() => {
-    if(location.state) setOpenSnack(true);
-  }, [location])
 
   const loginUser = async (data) => {
     try {
@@ -39,10 +35,10 @@ function Login() {
       if (res.status === 401) throw new Error('auth is failed');
       const { user } = await res.json();
       setCurrentUser(user);
-      navigate('/notes');
+      navigate('/notes', {state: {message: `Welcome back ${user.username}`, severity: 'success'}});
     }
     catch (e) {
-      console.log(e.message);
+      setOpenSnack(true);
     }
   }
 
@@ -78,7 +74,7 @@ function Login() {
             label='Username'
             margin='dense'
             {...register('username', {required: 'Username is required!'})}
-            error={!!errors?.username}
+            error={!!errors?.username || openSnack}
             helperText={errors?.username && errors.username.message}
           />
           <TextField
@@ -86,7 +82,7 @@ function Login() {
             autoComplete='off'
             margin='dense'
             {...register('password', {required: 'Password is required!'})}
-            error={!!errors?.password}
+            error={!!errors?.password || openSnack}
             helperText={errors.password && errors.password.message}
           />
           <Button
@@ -97,14 +93,13 @@ function Login() {
           >Login</Button>
         </Box>
       </Box>
-      {location.state && (
-        <Snackbar
-          open={openSnack}
-          autoHideDuration={3000}
-          onClose={() => setOpenSnack(false)}
-        ><Alert severity={location.state.severity}>{location.state.message}</Alert>
+      <SnackbarFlash />
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnack(false)}
+        ><Alert severity='error'>Incorrect username or password</Alert>
       </Snackbar>
-      )}
     </Container>
   )
 }

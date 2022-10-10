@@ -2,7 +2,7 @@ const User = require('../models/user');
 
 module.exports.returnUser = (req, res) => {
     res.send({
-        user: req.user || null,
+        user: (({_id, username}) => ({_id, username}))(req.user) || null,//syntax for assigning only certain fields. This is type of object destructuring
     });
 }
 
@@ -14,7 +14,7 @@ module.exports.registerUser = async (req, res) => {
     req.login(newUser, err => {
         if(err) return next(err);
         res.send({
-            user: req.user || null,
+            user: (({_id, username}) => ({_id, username}))(req.user) || null
         });
     })
 }
@@ -22,7 +22,7 @@ module.exports.registerUser = async (req, res) => {
 module.exports.failLogin = (req, res) => {
     res.status(401).send({
         success: false,
-        message: 'failure'
+        message: 'Incorrect username or password'
     });
 }
 
