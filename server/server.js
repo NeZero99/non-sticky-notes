@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -10,6 +14,7 @@ const session = require('express-session');
 const passport = require('passport');
 const User = require('./models/user');
 const LocalStrategy = require("passport-local");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 app.use(cors());
 app.use(express.json());//middleware for passing json
@@ -38,7 +43,7 @@ db.once('open', () => {
 
 //session initialization
 const sessionConfig = {
-    secret: 'testSecret',
+    secret: process.env.SESSION_SECRET || 'testSecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -51,7 +56,21 @@ app.use(session(sessionConfig));
 //passport initialization
 app.use(passport.initialize());
 app.use(passport.session());
+//local auth
 passport.use(new LocalStrategy(User.authenticate()));
+//google auth
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "user/login/google/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    //   return cb(err, user);
+    // });
+    return done(null, profile);
+  }
+));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

@@ -42,6 +42,10 @@ function Login() {
     }
   }
 
+  const googleAuth = () => {
+    window.open("http://localhost:5000/user/login/google", "_self");
+  }
+
   return (
     <Container sx={{
       height: '100vh',
@@ -66,6 +70,7 @@ function Login() {
             padding: 2,
             borderRadius: 2
           }}>
+          {/* <Button onClick={googleAuth}>Google</Button> */}
           <Link component={LinkRouter} to={'/register'}
             underline='hover'
             color='secondary'
