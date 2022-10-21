@@ -19,7 +19,7 @@ function Home() {
       return navigate('/login', {state: {message: 'Please login to save Notes', severity: 'info'}});
     }
     
-    const res = await fetch('/notes', {
+    const res = await fetch('/api/notes', {
       method: 'POST',
       headers: {
           'Content-type': 'application/json',

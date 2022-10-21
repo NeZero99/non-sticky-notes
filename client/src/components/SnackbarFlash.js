@@ -13,6 +13,11 @@ function SnackbarFlash() {
     if(location.state) setOpenSnack(true);
   }, [location])
 
+  const closingSnack = () => {
+    setOpenSnack(false);
+    window.history.replaceState({}, document.title)//removes state from location
+  }
+
   return (
     <>
     {location.state && (
@@ -20,14 +25,14 @@ function SnackbarFlash() {
         <Snackbar
         open={openSnack}
         autoHideDuration={3000}
-        onClose={() => setOpenSnack(false)}
+        onClose={closingSnack}
         ><Alert severity={location.state.severity}>{location.state.message}</Alert>
         </Snackbar>
       ) : (
         <Snackbar
         open={openSnack}
         autoHideDuration={3000}
-        onClose={() => setOpenSnack(false)}
+        onClose={closingSnack}
         message={location.state.message}
         />
       )

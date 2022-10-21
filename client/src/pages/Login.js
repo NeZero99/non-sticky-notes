@@ -25,7 +25,7 @@ function Login() {
 
   const loginUser = async (data) => {
     try {
-      const res = await fetch('/user/login', {
+      const res = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

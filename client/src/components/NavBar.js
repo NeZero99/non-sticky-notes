@@ -25,7 +25,7 @@ function NavBar( {position} ) {
   const logout = async () => {
     try{
       let username = currentUser.username;
-      const res = await fetch('/user/logout', {
+      const res = await fetch('/api/user/logout', {
         method: 'POST',
       });
       if(!res.ok) throw new Error(res.statusText);

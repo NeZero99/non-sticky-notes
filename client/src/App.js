@@ -23,12 +23,11 @@ function App() {
 
   useEffect(() => {
     getUser();
-    console.log('test')
   }, [])
 
   const getUser = async() => {
     try{
-      const res = await fetch('/user', {
+      const res = await fetch('/api/user', {
         method: 'GET'
       });
       if(!res.ok) throw new Error(res.statusText);

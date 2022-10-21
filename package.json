@@ -4,8 +4,8 @@
   "description": "Do do list app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server"
+    "start": "node server/server.js",
+    "build": "cd client && npm install && npm run build"
   },
   "keywords": [
     "to",

@@ -2,6 +2,8 @@ if(process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
+const PORT = process.env.PORT || 3002;
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -14,15 +16,17 @@ const session = require('express-session');
 const passport = require('passport');
 const User = require('./models/user');
 const LocalStrategy = require("passport-local");
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const path = require('path');
 
 app.use(cors());
 app.use(express.json());//middleware for passing json
 
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+
 //connecting server to a port
-const port = 5000;
-const server = app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+const server = app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
 })
 //socket connection
 const io = new Server(server, {
@@ -69,13 +73,18 @@ passport.deserializeUser(async (_id, done) => {
 });
 
 //routes
-app.use('/notes', noteRoutes);
-app.use('/user', userRoutes);
+app.use('/api/notes', noteRoutes);
+app.use('/api/user', userRoutes);
 
 //socket connection
 io.on('connection', (socket) => {
     noteHandlers(io, socket);
 })
+
+// All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
 
 //error middleware
 app.use((err, req, res, next) => {

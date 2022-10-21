@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import SnackbarFlash from '../components/SnackbarFlash';
 
-const socket = io.connect('http://localhost:5000')
+const socket = io.connect('http://localhost:3002')
 
 function Notes() {
   //all notes state
@@ -34,7 +34,7 @@ function Notes() {
 
   const getData = async () => {//fetching all notes from a server
     try{
-      const response = await fetch('/notes')
+      const response = await fetch('/api/notes')
       if(!response.ok) throw new Error(response.statusText);
       const data = await response.json();
       setNotes(data);
@@ -51,7 +51,7 @@ function Notes() {
       setCursor('wait');
       const oldNotes = notes;
       setNotes(prev => [...prev, {_id: 'loadingNote'}]);
-      const res = await fetch('/notes', {
+      const res = await fetch('/api/notes', {
           method: 'POST',
           headers: {
               'Content-type': 'application/json',
@@ -73,7 +73,7 @@ function Notes() {
 
   const saveEditedNote = async (newNote, noteId) => {//sending put request to save edited note
     try{
-      const res = await fetch(`/notes/${noteId}`, {
+      const res = await fetch(`/api/notes/${noteId}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
@@ -97,7 +97,7 @@ function Notes() {
   const deleteNote = async (id) => {//sending request for deleting
     try{
       setCursor('wait');
-      const res = await fetch(`/notes/${id}`, {
+      const res = await fetch(`/api/notes/${id}`, {
         method: 'DELETE'
       });
       if(!res.ok) throw Error(res.statusText);
