@@ -21,9 +21,11 @@ const LocalStrategy = require("passport-local");
 const path = require('path');
 const MongoStore = require('connect-mongo');
 
-app.use(cors({
+const corsUrl = {
     origin: [process.env.REACT_ORIGIN, 'https://non-sticky-notes-production.up.railway.app/']
-}));
+}
+
+app.use(cors(corsUrl));
 app.use(express.json());//middleware for passing json
 
 // Have Node serve the files for our built React app
@@ -34,12 +36,7 @@ const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 })
 //socket connection
-const io = new Server(server, {
-    cors: {
-        origin: process.env.REACT_ORIGIN,
-        methods: ['GET', 'SET']
-    }
-})
+const io = new Server(server, {cors: corsUrl})
 
 //database connection
 mongoose.connect(dbUrl);
