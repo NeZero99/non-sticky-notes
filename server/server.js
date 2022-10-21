@@ -21,7 +21,9 @@ const LocalStrategy = require("passport-local");
 const path = require('path');
 const MongoStore = require('connect-mongo');
 
-app.use(cors());
+app.use(cors({
+    origin: [process.env.REACT_ORIGIN, 'https://non-sticky-notes-production.up.railway.app/']
+}));
 app.use(express.json());//middleware for passing json
 
 // Have Node serve the files for our built React app
