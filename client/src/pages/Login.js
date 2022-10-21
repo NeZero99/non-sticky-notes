@@ -33,17 +33,13 @@ function Login() {
         body: JSON.stringify(data)
       });
       if (res.status === 401) throw new Error('auth is failed');
-      const { user } = await res.json();
+      const {user} = await res.json();
       setCurrentUser(user);
       navigate('/notes', {state: {message: `Welcome back ${user.username}`, severity: 'success'}});
     }
     catch (e) {
       setOpenSnack(true);
     }
-  }
-
-  const googleAuth = () => {
-    window.open("http://localhost:5000/user/login/google", "_self");
   }
 
   return (
@@ -70,7 +66,6 @@ function Login() {
             padding: 2,
             borderRadius: 2
           }}>
-          {/* <Button onClick={googleAuth}>Google</Button> */}
           <Link component={LinkRouter} to={'/register'}
             underline='hover'
             color='secondary'
@@ -84,6 +79,7 @@ function Login() {
           />
           <TextField
             label='Password'
+            type='password'
             autoComplete='off'
             margin='dense'
             {...register('password', {required: 'Password is required!'})}

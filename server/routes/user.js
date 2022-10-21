@@ -14,15 +14,6 @@ router.route('/login')
     .post(passport.authenticate('local', { failureRedirect: '/user/login/failed' }), 
         user.returnUser);
 
-router.route('/login/google')
-    .get(passport.authenticate('google', { scope: [ 'email', 'profile' ] }));
-
-router.route('/login/google/callback')
-    .get(passport.authenticate('google', {
-        successRedirect: '/user',
-        failureRedirect: 'user/login/failed'
-     }));
-
 router.route('/login/failed')
     .get(user.failLogin);
 

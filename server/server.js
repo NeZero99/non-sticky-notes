@@ -58,21 +58,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 //local auth
 passport.use(new LocalStrategy(User.authenticate()));
-//google auth
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "user/login/google/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    //   return cb(err, user);
-    // });
-    return done(null, profile);
-  }
-));
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+  
+passport.deserializeUser(async (_id, done) => {
+    const currentUser = await User.findById({ _id });
+    console.log(currentUser);
+    done(null, currentUser);
+});
 
 //routes
 app.use('/notes', noteRoutes);

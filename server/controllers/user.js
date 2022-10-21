@@ -1,9 +1,9 @@
 const User = require('../models/user');
 
 module.exports.returnUser = (req, res) => {
-    res.send({
-        user: (({_id, username}) => ({_id, username}))(req.user) || null,//syntax for assigning only certain fields. This is type of object destructuring
-    });
+    let user = null;
+    if(req.user) user = (({_id, username}) => ({_id, username}))(req.user)//syntax for assigning only certain fields. This is type of object destructuring
+    res.send({user});
 }
 
 module.exports.registerUser = async (req, res) => {
