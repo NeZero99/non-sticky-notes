@@ -12,7 +12,8 @@ import {
 } from '@mui/material';
 import SnackbarFlash from '../components/SnackbarFlash';
 
-const socket = io.connect('http://localhost:3002')
+// const socket = io.connect('http://localhost:3002')
+const socket = io.connect('https://non-sticky-notes-production.up.railway.app/')
 
 function Notes() {
   //all notes state
