@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server/server.js",
-    "build": "cd client && npm install && npm run build"
+    "build": "cd client && npm install --legacy-peer-deps && npm run build"
   },
   "keywords": [
     "to",
