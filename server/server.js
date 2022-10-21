@@ -3,6 +3,8 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 const PORT = process.env.PORT || 3002;
+const dbUrl = process.env.DB_URL;
+// || 'mongodb://localhost:27017/to-doing-list'
 
 const express = require('express');
 const app = express();
@@ -17,6 +19,7 @@ const passport = require('passport');
 const User = require('./models/user');
 const LocalStrategy = require("passport-local");
 const path = require('path');
+const MongoStore = require('connect-mongo');
 
 app.use(cors());
 app.use(express.json());//middleware for passing json
@@ -37,7 +40,6 @@ const io = new Server(server, {
 })
 
 //database connection
-const dbUrl = 'mongodb://localhost:27017/to-doing-list';
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -46,8 +48,19 @@ db.once('open', () => {
 })
 
 //session initialization
+const storeLocation = MongoStore.create({
+    mongoUrl: dbUrl,
+    secret: process.env.SESSION_SECRET,
+    touchAfter: 24 * 3600
+})
+
+storeLocation.on('error', function(e) {
+    console.log('session store error', e);
+})
+
 const sessionConfig = {
-    secret: process.env.SESSION_SECRET || 'testSecret',
+    store: storeLocation,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
